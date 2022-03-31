@@ -1,0 +1,82 @@
+LAMMPS (29 Oct 2020)
+Lattice spacing in x,y,z = 4.1712880 4.1712880 4.1712880
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (4.1712880 4.1712880 4.1712880)
+  2 by 2 by 3 MPI processor grid
+Created 4 atoms
+  create_atoms CPU = 0.001 seconds
+Replicating atoms ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (8.3425760 8.3425760 8.3425760)
+  2 by 2 by 3 MPI processor grid
+  32 atoms
+  replicate CPU = 0.001 seconds
+WARNING: Using 'neigh_modify every 1 delay 0 check yes' setting during minimization (../min.cpp:187)
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.5
+  ghost atom cutoff = 6.5
+  binsize = 3.25, bins = 3 3 3
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair meam, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+  (2) pair meam, perpetual, half/full from (1)
+      attributes: half, newton on
+      pair build: halffull/newton
+      stencil: none
+      bin: none
+Setting up cg style minimization ...
+  Unit style    : metal
+  Current step  : 0
+WARNING: Energy due to 1 extra global DOFs will be included in minimizer energies
+Per MPI rank memory allocation (min/avg/max) = 9.652 | 9.656 | 9.658 Mbytes
+Step PotEng Lx Ly Lz Press Pxx Pyy Pzz c_eatoms c_vorol 
+       0   -124.34542     8.342576     8.342576     8.342576   -103782.04   -103782.04   -103782.04   -103782.04   -124.34542     580.6314 
+      10   -125.26639    8.2591502    8.2591502    8.2591502   -65862.877   -65862.877   -65862.877   -65862.877   -125.26639    563.38606 
+      20   -125.72391    8.1757245    8.1757245    8.1757245   -19139.308   -19139.308   -19139.308   -19139.308   -125.72391    546.48562 
+      29      -125.76    8.1458701    8.1458701    8.1458701 -7.3534514e-10 -7.4053896e-10 -7.3919862e-10 -7.2629783e-10      -125.76    540.52084 
+Loop time of 0.0158878 on 12 procs for 29 steps with 32 atoms
+
+91.1% CPU use with 12 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+       -124.3454221633  -125.760000003919  -125.760000003919
+  Force two-norm initial, final = 112.83234 7.6327152e-13
+  Force max component initial, final = 112.83234 7.6221458e-13
+  Final line search alpha, max atom move = 1.0000000 7.6221458e-13
+  Iterations, force evaluations = 29 35
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0035224  | 0.0037126  | 0.0038819  |   0.2 | 23.37
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00094008 | 0.0011041  | 0.0012503  |   0.3 |  6.95
+Output  | 0.0068994  | 0.0069069  | 0.0069747  |   0.0 | 43.47
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.004164   |            |       | 26.21
+
+Nlocal:        2.66667 ave           4 max           2 min
+Histogram: 8 0 0 0 0 0 0 0 0 4
+Nghost:        307.667 ave         322 max         281 min
+Histogram: 4 0 0 0 0 0 0 0 0 8
+Neighs:        72.0000 ave         108 max          54 min
+Histogram: 8 0 0 0 0 0 0 0 0 4
+FullNghs:      144.000 ave         216 max         108 min
+Histogram: 8 0 0 0 0 0 0 0 0 4
+
+Total # of neighbors = 1728
+Ave neighs/atom = 54.000000
+Neighbor list builds = 0
+Dangerous builds = 0
+Total energy (eV) = -125.760000003919;
+Number of atoms = 32;
+Lattice constant (Angstoms) = 4.07293504617254;
+Cohesive energy (eV) = -3.93000000012247;
+atomic volumne = 16.8912761118278;
+All done!
+Total wall time: 0:00:00

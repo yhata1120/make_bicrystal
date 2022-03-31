@@ -1,0 +1,93 @@
+
+
+# define looping parameter------------------ 
+include ./paras 
+
+label loopa # a label where loop a starts
+variable a loop ${na} # define a 'loop' variable
+label loopb # a label where loop b starts
+variable b loop ${nb} # define b 'loop' variable
+
+
+variable LatParam equal  3.50579800 # lattice parameter optimized for potential
+variable ty equal "((v_a-1) * v_cnidv1y + (v_b-1) * v_cnidv2y)" # displacement in y direction
+variable tz equal "((v_a-1) * v_cnidv1z + (v_b-1) * v_cnidv2z)" # displacement in z direction
+variable tx equal 0 
+# end end of defining looping parameter------------------
+
+
+
+clear
+
+#Initialize Simulation --------------------- 
+units metal 
+dimension 3 
+boundary s p p
+atom_style atomic
+atom_modify map array
+# ---------- Create Atoms --------------------- 
+read_data ./atominfile2
+include ./blockfile
+
+mass 1 58.6934 #Ni
+mass 2 58.6934 #Ni
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style meam
+pair_coeff * * library.meam Ni Ni.meam Ni Ni
+neighbor 2.0 bin 
+neigh_modify delay 10 check yes 
+
+# ---------- Compute properties of bulk --------------------- 
+#0.excess energy
+compute eng all pe/atom 
+compute eatoms all reduce sum c_eng 
+compute emiddle middle reduce sum c_eng
+compute bulk_dis bulk displace/atom 
+compute hulk_dis_ave_x bulk reduce ave c_bulk_dis[1]
+# ---------- Calculate excess values ---------------------
+#per atom properties in Cu crystal 
+variable minimumenergy equal -4.45000000010775
+variable gbarea equal "ly * lz" 
+
+# ---------- Run Minimization ---------------------
+reset_timestep 0
+
+displace_atoms right move 0 ${ty} ${tz} units box
+
+velocity fixbulk1 zero linear
+fix fixbulk1 fixbulk1 setforce 0.0 0.0 0.0
+
+velocity fixbulk2 zero linear
+fix fixbulk2 fixbulk2 setforce NULL 0.0 0.0
+
+min_style cg 
+minimize 1.0e-10 1.0e-10 50000 100000 
+
+#--------- RBT right atoms -------- 
+
+thermo 10000 
+thermo_style custom step lx ly lz c_emiddle temp c_hulk_dis_ave_x
+dump 		1 all custom 1 final${a}_${b} id type xu yu zu c_eng 
+run 0
+
+#4.excess energy
+variable esum equal "v_minimumenergy * count(middle)" 
+variable xseng equal "c_emiddle - (v_minimumenergy * count(middle))" 
+variable gbe equal "(c_emiddle - (v_minimumenergy * count(middle)))/v_gbarea" 
+variable gbemJm2 equal ${gbe}*16021.7733 
+variable gbernd equal round(${gbemJm2}) 
+variable ave_dis_x equal c_hulk_dis_ave_x
+
+#----------- output calculation result of each loop into results file 
+print "${tx} ${ty} ${tz} ${gbemJm2} ${ave_dis_x}" append results
+
+
+# inner loop update firstly
+next b # update the loop variable
+jump proto.in loopb # jump to the label
+variable b delete # after finishing the inner loop delete the loop variable of it
+
+#then go to the outter loop
+next a
+jump proto.in loopa
